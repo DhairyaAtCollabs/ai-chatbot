@@ -3,6 +3,8 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 import logging
+# Add this new import for voice input
+from streamlit_mic_recorder import speech_to_text
 
 # Suppress ALTS warnings
 logging.getLogger('google.auth').setLevel(logging.ERROR)
@@ -35,7 +37,7 @@ st.markdown("""
     .stChatMessage { background-color: #f0f2f6; border-radius: 10px; padding: 10px; margin: 5px 0; }
     .user { background-color: #007bff; color: white; }
     .ai { background-color: #e9ecef; color: black; }
-    .main-footer { text-align: center; padding: 20px; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; }
+    .main-footer { text-align: center; padding: 20px; background: linear-gradient(135deg, #EEAECA 0%, #94BBE9 100%); color: white; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -63,19 +65,28 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar="👤" if message["role"] == "user" else "🤖"):
         st.markdown(message["content"])
 
-# Chat input
+# Place the voice recorder at the bottom, just before the chat input
+voice_input = speech_to_text(language='en', start_prompt="Start voice chat", stop_prompt="Stop voice chat", just_once=True, use_container_width=True)
+
+# Check for both text input and voice input
 if prompt := st.chat_input("Type your message here..."):
-    # Add user message
+    # If the user typed, the prompt is already set
+    pass
+elif voice_input:
+    # If the user spoke, set the prompt from the transcribed text
+    prompt = voice_input
+
+# Run the chatbot logic if a prompt exists
+if prompt:
+    # Add user message to history
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt)
-
+    
     # Generate AI response
     with st.chat_message("assistant", avatar="🤖"):
         try:
-            # Use selected model
             model = genai.GenerativeModel(model_choice)
-            # Recreate chat with history
             chat_history = [{"role": msg["role"], "parts": [{"text": msg["content"]}]} for msg in st.session_state.messages[:-1]]
             chat = model.start_chat(history=chat_history)
             response = chat.send_message(prompt, stream=False)
@@ -88,4 +99,4 @@ if prompt := st.chat_input("Type your message here..."):
             st.error(f"Oops! Error: {e}")
 
 # Footer
-st.markdown('<div class="main-footer">© 2025 Your AI Chatbot App</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-footer">© 2025 Kuldeep Patel AI Chatbot App</div>', unsafe_allow_html=True)
