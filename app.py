@@ -35,7 +35,7 @@ st.set_page_config(
 st.markdown("""
     <style>
     .stChatMessage { background-color: #f0f2f6; border-radius: 10px; padding: 10px; margin: 5px 0; }
-    .user { background-color: #007bff; color: white; }
+    .user { background-color: #007bff; color: black; }
     .ai { background-color: #e9ecef; color: black; }
     .main-footer { text-align: center; padding: 20px; background: linear-gradient(135deg, #EEAECA 0%, #94BBE9 100%); color: white; }
     </style>
