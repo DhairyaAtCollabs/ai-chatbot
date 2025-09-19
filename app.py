@@ -35,7 +35,7 @@ st.set_page_config(
 st.markdown("""
     <style>
     .stChatMessage { background-color: #f0f2f6; border-radius: 10px; padding: 10px; margin: 5px 0; }
-    .user { background-color: #007bff; color: black; }
+    .user { background-color: #007bff; color: white; }
     .ai { background-color: #e9ecef; color: black; }
     .main-footer { text-align: center; padding: 20px; background: linear-gradient(135deg, #EEAECA 0%, #94BBE9 100%); color: white; }
     </style>
@@ -48,7 +48,7 @@ with st.sidebar:
     model_choice = st.selectbox("Model", ["gemini-1.5-flash", "gemini-1.5-pro"])
     theme = st.selectbox("Theme", ["Light", "Dark"])
     if theme == "Dark":
-        st.markdown('<style> .stApp { background-color: #0e1117; color: white; } </style>', unsafe_allow_html=True)
+        st.markdown('<style> .stApp { background-color: #0e1117; color: black; } </style>', unsafe_allow_html=True)
     else:
         st.markdown('<style> .stApp { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); } </style>', unsafe_allow_html=True)
     if st.button("Clear Chat", type="secondary"):
